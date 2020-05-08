@@ -29,14 +29,26 @@ http.createServer(function (request, response) {
     fs.readFile(pathname.substr(1), async function (err, data) {
         response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
         try {
-            if ((params.title === undefined) && (data !== undefined)) {
+            if ((params.title == undefined) && (data !== undefined)) {
                 response.write(data.toString());//title is required to search
                 console.log("!!!!fail value=" + value);
             }
             else {//search with title
-                // response.write(JSON.stringify(params));
+                //select query
+                var select_Sql = "select title,author,publish_date,source_name,content from fetches where (title like '%" +
+                    params.title + "%' or keywords like '%" + params.kw + "%') and content like '%" + params.content + "%'";
+                
+                if(params.kw == undefined && params.content == undefined)
                 var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
-                    params.title + "%' or keywords like '%" + params.kw + "%' or content like '%" + params.content + "%'";
+                params.title + "%'";
+                else if(params.kw == undefined)
+                    var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
+                    params.title + "%' and content like '%" + params.content + "%'"
+                else if(params.content == undefined)
+                var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
+                    params.title + "%' and keywords like '%" + params.kw + "%'";
+            
+                
                 let value = await mysql.promise_query(select_Sql, function (qerr, vals, fields) {
                     console.log("Input: " + JSON.stringify(params));
                 });
@@ -54,7 +66,7 @@ http.createServer(function (request, response) {
                     var publish_date = moment(value[j].publish_date).format('YYYY-MM-DD');
                     var now = moment().format('YYYY-MM-DD');
                     var delta = (new Date(publish_date) - new Date(now))/(1000*60*60*24);
-                    console.log("delta time="+delta);
+                    // console.log("delta time="+delta);
                     if(Math.exp(delta/10) > Fresh) Fresh = Math.exp(delta/10);
 
 
