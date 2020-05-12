@@ -1,6 +1,9 @@
 var express = require('express');
 var app = express();
 
+//访问静态文件
+app.use('/public', express.static('public'));
+
 //  主页输出 "Hello World"
 app.get('/', function(req, res) {
     console.log("主页 GET 请求");
@@ -12,6 +15,8 @@ app.get('/ab*cd', function(req, res) {
     console.log("/ab*cd GET 请求");
     res.send('正则匹配');
 })
+
+
 
 var server = app.listen(8081, function() {
     var host = server.address().address
