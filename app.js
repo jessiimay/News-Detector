@@ -12,7 +12,8 @@ var handlebars = require('express3-handlebars').create({ defaultlayout: 'main' }
 
 
 ////////////////////////////////////setting//////////////////////////////////
-app.set('port', process.env.PORT || 3000);
+// app.set('port', process.env.PORT || 3000);
+app.set('port', 3000);
 // app.engine('html', consolidate.ejs);
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -30,9 +31,9 @@ app.use(bodyParser.urlencoded());
 ////////////////////////////////////request//////////////////////////////////
 ///////////////////////pass params by local variables////////////////////////
 var Request = {
-    title : '',
-    kw : '',
-    content : ''
+    title: '',
+    kw: '',
+    content: ''
 }
 
 //////////////////////////////////////rout///////////////////////////////////
@@ -44,49 +45,75 @@ app.get('/', function (req, res) {
     console.log(Request.title);
     console.log(Request.kw);
     console.log(Request.content);
-    res.render('home');
-    res.redirect('/news');
+    if (Request.title == undefined) {
+        res.render('home');
+    } else if (Request.title == undefined) {
+        res.render('home');
+    } else {
+        res.redirect('/news?title=' + Request.title + '&kw=' + Request.kw + '&content=' + Request.content);
+    }
+    // res.render('home');
+    // res.redirect('/news');
     // res.send(req.body);
 
 });
 
-app.post('/news', function (req, res) {
-    res.render('news', news);
+app.get('/news*', async function (req, res) {
+    // res.render('news', news);
     console.log(Request.title);
     console.log(Request.kw);
     console.log(Request.content);
     // res.send(news);
     // res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-    // try {
-    //     if ((title == undefined) && (req.body !== undefined)) {
-    //         res.send(req.body + "title is required to search");//title is required to search
-    //         console.log("!!!!fail value=");
-    //     }
-    //     else {
-    //         var select_Sql = "select title,author,publish_date,source_name,content from fetches where (title like '%" +
-    //             title + "%' or keywords like '%" + kw + "%') and content like '%" + content + "%'";
-    //         if (kw == undefined && content == undefined)
-    //             var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
-    //                 title + "%'";
-    //         else if (kw == undefined)
-    //             var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
-    //                 title + "%' and content like '%" + content + "%'";
-    //         else if (content == undefined)
-    //             var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
-    //                 title + "%' and keywords like '%" + kw + "%'";
+    try {
+        if ((Request.title == undefined) && ((Request.kw !== undefined) || (Request.content !== undefined))) {
+            res.send(req.body + "title is required to search");//title is required to search
+            console.log("!!!!fail value=");
+        }
+        else {
+            var select_Sql = "select title,author,publish_date,source_name,content from fetches where (title like '%" +
+                Request.title + "%' or keywords like '%" + Request.kw + "%') and content like '%" + Request.content + "%'";
+            if (Request.kw == undefined && Request.content == undefined)
+                var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
+                    Request.title + "%'";
+            else if (Request.kw == undefined)
+                var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
+                    Request.title + "%' and content like '%" + Request.content + "%'";
+            else if (Request.content == undefined)
+                var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
+                    Request.title + "%' and keywords like '%" + Request.kw + "%'";
 
 
-    //         let value =await mysql.promise_query(select_Sql, function (qerr, vals, fields) {
-    //             console.log("Input: " + JSON.stringify(req.body));
-    //         });
+            let value = await mysql.promise_query(select_Sql, function (qerr, vals, fields) {
+                console.log("Input: " + JSON.stringify(req.body));
+            });
+            // console.log(typeof news);
+            // console.log(news);
+            var num = 0;
+            var Freshness = 0;
+            for (var i in value) {
+                num += 1;
+            }
+            var Popularity = Math.exp(-1 / num);
+            var news = '';
+            for (var j = 0; j < num; j++) {
+                var publish_date = moment(value[j].publish_date).format('YYYY-MM-DD');
+                var now = moment().format('YYYY-MM-DD');
+                var delta = (new Date(publish_date) - new Date(now)) / (1000 * 60 * 60 * 24);
+                // console.log("delta time="+delta);
+                if (Math.exp(delta / 10) > Freshness) Freshness = Math.exp(delta / 10);
 
-    //         news = value;
+                news += "<div class=\"sec-title text-center white wow animated fadeInDown\">  <h2 color=\"white\">" + value[j].title + "</h2> </div> <br>" +
+                    + "<div  text-align=\"center\" line-height=\"100px\" font-size=\"20px\">" + value[j].author + "&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" + publish_date + "&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" + value[j].source_name + "<br>"
+                   + "p style=\"white-space:pre-wrap\" " + value[j].content + "</p></div><br><br>";
+            }
 
-    //     }
-    // } catch (err) {
-    //     console.log(err);
-    // }
-    // res.end();
+            res.render('news', { body: news, F: (Freshness*100).toFixed(1)+"%", P: (Popularity*100).toFixed(1)+"%" });
+
+        }
+    } catch (err) {
+        console.log(err);
+    }
 });
 
 
