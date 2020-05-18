@@ -12,27 +12,27 @@
 
 |--- bin/
 
-|				|--- node_modules/
+|           |--- node_modules/
 
-|				|--- package.json
+|           |--- package.json
 
-|				|--- package-loick.json
+|           |--- package-loick.json
 
 |--- public/
 
-|				|--- css/
+|           |--- css/
 
-|				|--- fonts/
+|           |--- fonts/
 
-|				|--- img/
+|           |--- img/
 
-|				|--- js/
+|           |--- js/
 
-|				|--- vendor/	测试用的开发依赖项
+|           |--- vendor/	测试用的开发依赖项
 
-|				|--- home.handlebars	搜索主页
+|           |--- home.handlebars	搜索主页
 
-|				|--- news.handlebars	新闻页面
+|           |--- news.handlebars	新闻页面
 
 |--- fetches.sql	数据库表schema
 
@@ -161,4 +161,4 @@ npm install --save-dev mocha
 
 ​	近一年一直忙于学习与各种项目ddl，少有完整地整理某个项目的学习历程，实是惭愧。一则以为个人的笔记其实拙浅、比起document无大的查询意义；二则，一些我想动笔写写的项目却是合作项目，对他人代码进行详解总需空闲，只对自己的部分详述又不美。
 
-​	此处也能算一个开始，希望所有写过的代码踩过的坑都能被规整成历程吧。接下来顺便搭一下自己的网站，可以期待。
+​	此处也能算一个开始，希望所有写过的代码踩过的坑都能被规整成历程吧。可以期待。
