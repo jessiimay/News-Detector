@@ -1,10 +1,7 @@
 /////////////////////////////////dependency////////////////////////////////
-var http = require('http');
-var fs = require('fs');
-var url = require('url');
 var mysql = require('./mysql.js');
 var moment = require('moment');
-var consolidate = require('consolidate');
+// var consolidate = require('consolidate');
 var bodyParser = require('body-parser');
 var express = require('express');
 var app = express();//创建server

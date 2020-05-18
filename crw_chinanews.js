@@ -4,6 +4,7 @@ var myCheerio = require('cheerio');
 var myIconv = require('iconv-lite');
 require('date-utils');
 var mysql = require('./mysql.js');//mysql在相同文件夹下的mysql.js
+var schedule = require('node-schedule');//定时
 
 var source_name = "中国新闻网";
 var domain = 'http://www.chinanews.com/';
@@ -40,7 +41,18 @@ function request(url, callback) {
     myRequest(options, callback)
 };
 
-seedget();
+//！定时执行
+var rule = new schedule.RecurrenceRule();
+var times = [1,3,5,7,9,11,13,15,17,19,21,23]; //每天2次自动执行
+var times2 = 03; //定义在第几分钟执行
+rule.hour = times;
+rule.minute = times2;
+
+//定时执行httpGet()函数
+schedule.scheduleJob(rule, function() {
+    seedget();
+});
+
 
 function seedget() {
     request(seedURL, function(err, res, body) { //读取种子页面
