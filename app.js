@@ -12,8 +12,8 @@ var handlebars = require('express3-handlebars').create({ defaultlayout: 'main' }
 
 
 ////////////////////////////////////setting//////////////////////////////////
-// app.set('port', process.env.PORT || 3000);
 app.set('port', 3000);
+//app.set('port', process.env.PORT || 3000);
 // app.engine('html', consolidate.ejs);
 app.engine('handlebars', handlebars.engine);
 app.set('view engine', 'handlebars');
@@ -105,7 +105,7 @@ app.get('/news*', async function (req, res) {
 
                 news += "<div class=\"sec-title text-center white wow animated fadeInDown\">  <h2 color=\"white\">" + value[j].title + "</h2> </div> <br>" +
                     + "<div  text-align=\"center\" line-height=\"100px\" font-size=\"20px\">" + value[j].author + "&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" + publish_date + "&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" + value[j].source_name + "<br>"
-                   + "p style=\"white-space:pre-wrap\" " + value[j].content + "</p></div><br><br>";
+                   + "<p style=\"white-space:pre-wrap\"> " + value[j].content + "</p></div><br><br>";
             }
 
             res.render('news', { body: news, F: (Freshness*100).toFixed(1)+"%", P: (Popularity*100).toFixed(1)+"%" });
@@ -136,7 +136,7 @@ app.use(function (err, req, res, next) {
 
 
 ////////////////////////////////////server//////////////////////////////////
-var server = app.listen(app.get('post'), "127.0.0.1", function () {//指跑在哪个端口
+var server = app.listen(app.get('port'), "127.0.0.1", function () {//指跑在哪个端口
 
     var host = server.address().address
     var port = server.address().port

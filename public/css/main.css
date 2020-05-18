@@ -722,7 +722,10 @@ ul.external li a:hover {
 
 #testimonials .overlay {
     background-color: rgba(15,155,224, 0.78);
+    /* background-color: rgba(104, 73, 0, 0.856); */
     padding: 70px 0 40px;
+    position: relative;
+    height: 100%;
 }
 
 .testimonial-item {
@@ -741,6 +744,7 @@ ul.external li a:hover {
 
 .testimonial-item > div {
     line-height: 30px;
+    margin: 80px 75px;
     position: relative;
 }
 
@@ -752,6 +756,7 @@ ul.external li a:hover {
     left: -35px;
     position: absolute;
     width: 45px;
+    padding-top: 80px;
 }
 
 .testimonial-item > div:after {
@@ -763,6 +768,7 @@ ul.external li a:hover {
     position: absolute;
     right: 0;
     width: 45px;
+    padding-bottom: 30px;
 }
 
 .testimonial-item > div > span {
