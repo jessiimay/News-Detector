@@ -42,6 +42,7 @@
 
     <!-- Modernizer Script for old Browsers -->
     <script src="/js/modernizr-2.6.2.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 
 </head>
 
@@ -60,26 +61,26 @@ Fixed Navigation
 ==================================== -->
 
     <!-- <header id="navigation" class="navbar-inverse navbar-fixed-top animated-header"> -->
-        <!-- <div class="container">
+    <!-- <div class="container">
             <div class="navbar-header"> -->
-        <!-- responsive nav button -->
-        <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+    <!-- responsive nav button -->
+    <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button> -->
-        <!-- /responsive nav button -->
+    <!-- /responsive nav button -->
 
-        <!-- logo -->
-        <!-- <h1 class="navbar-brand">
+    <!-- logo -->
+    <!-- <h1 class="navbar-brand">
                     <a href="#body">Blue</a> -->
-        <!-- </h1> -->
-        <!-- /logo -->
-        <!-- </div> -->
+    <!-- </h1> -->
+    <!-- /logo -->
+    <!-- </div> -->
 
-        <!-- main nav -->
-        <!-- <nav class="collapse navbar-collapse navbar-right" role="navigation">
+    <!-- main nav -->
+    <!-- <nav class="collapse navbar-collapse navbar-right" role="navigation">
                 <ul id="nav" class="nav navbar-nav">
                     <li><a href="#body">Home</a></li>
                     <li><a href="#service">Service</a></li>
@@ -89,9 +90,9 @@ Fixed Navigation
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav> -->
-        <!-- /main nav -->
+    <!-- /main nav -->
 
-        <!-- </div> -->
+    <!-- </div> -->
     <!-- </header> -->
     <!--
 End Fixed Navigation
@@ -114,9 +115,51 @@ Home Slider
                         <div class="bg-img bg-img-1"></div>
 
                         <div class="slide-caption" color="white">
-                            <div class="caption-content" color = "white">
-                                
-                                <span color="white" class="animated fadeInDown" font-style="oblique">throughout Sina, 163 and
+                            <div class="nav-logger">
+                                <span style="float:right;margin-right:50px;margin-top:10px;" onclick="login()">登录</span>
+
+                                <div class="zhezhao" id='login'>
+
+                                    <div class="login-wrapper">
+                                        <div id="header-right" onclick="hiddeLogin()">x</div>
+                                        <div class="header">Login</div>
+                                        <div class="form-warpper">
+                                            <input type="text" name="username" placeholder="username"
+                                                class="input-item">
+                                            <input type="password" name="password" placeholder="password"
+                                                class="input-item">
+                                            <div class="btn" id="lo">Login</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <span style="float:right;margin-right:50px;margin-top:10px;"
+                                    onclick=register()>注册</span>
+                                <div class="zhezhao" id='register'>
+
+                                    <div class="login-wrapper">
+                                        <div id="header-right" onclick="hidderegister()">x</div>
+                                        <div class="header" style="height:150px">Register</div>
+                                        <div class="form-warpper">
+                                            <input type="text" name="username" placeholder="username"
+                                                class="input-item">
+                                            <input type="password" name="password" placeholder="password"
+                                                class="input-item">
+                                            <input type="password" name="repassword" placeholder="repeat password"
+                                                class="input-item">
+                                            <div class="btn" id='re'>Register</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="caption-content" color="white">
+
+                                <span color="white" class="animated fadeInDown" font-style="oblique">throughout
+                                    Sina,
+                                    163
+                                    and
                                     ChinaNews</span>
                                 <h2 class="animated fadeInDown">Search for news about:</h2>
                                 <form action="/" method="get">
@@ -216,7 +259,7 @@ End Home SliderEnd
                         </div>
 
                         <div id="testimonial" class=" wow animated fadeInUp"> -->
-                            <!-- <div class="testimonial-item text-center">
+            <!-- <div class="testimonial-item text-center">
                                 <img src="../img/member-1.jpg" alt="Our Clients">
                                 <div class="clearfix">
                                     <span>Katty Flower</span>
@@ -249,7 +292,7 @@ End Home SliderEnd
                                         fugiat nulla pariatur.</p>
                                 </div>
                             </div> -->
-                <!--   </div>
+            <!--   </div>
 
                      </div>
                 </div>
@@ -282,6 +325,79 @@ End Home SliderEnd
         <script src="/js/wow.min.js"></script>
         <!-- Custom Functions -->
         <script src="/js/main.js"></script>
+        <script type="text/javascript">
+            document.getElementById('login').style.display = "none";
+            document.getElementById('register').style.display = "none";
+            function login() {
+                document.getElementById('login').style.display = "";
+                document.getElementsByClassName('caption-content')[0].style.display = "none";
+            }
+            function register() {
+                document.getElementById('register').style.display = "";
+                document.getElementsByClassName('caption-content')[0].style.display = "none";
+            }
+            function hiddeLogin() {
+                document.getElementById('login').style.display = "none";
+                document.getElementsByClassName('caption-content')[0].style.display = "";
+            }
+            function hidderegister() {
+                document.getElementById('register').style.display = "none";
+                document.getElementsByClassName('caption-content')[0].style.display = "";
+            }
+
+            $("#lo").click(function () {
+                un = document.getElementsByName('username')[0].value
+                pw = document.getElementsByName('password')[0].value
+                console.log('un' + un)
+                $.ajax({
+                    url: '/login',
+                    type: 'post',
+                    data: {
+                        username: un,
+                        password: pw
+                    },
+                    success: function (str) {
+                        if (str === '200') {
+                            alert('登录成功')
+                        } else {
+                            alert('密码有误')
+                        }
+                    },
+                    error: function () {
+                        alert('通信错误');
+                    }
+                })
+            });
+
+            $("#re").click(function () {
+                un = document.getElementsByName('username')[1].value
+                pw = document.getElementsByName('password')[1].value
+                pw2 = document.getElementsByName('repassword')[0].
+                if(pw === pw2 && un != ''){
+                    $.ajax({
+                        url: '/register',
+                        type: 'post',
+                        data:{
+                            username:un,
+                            password:pw,
+                            repassword:pw2
+                        },
+                        success: function (str) {
+                            if(str === '200'){
+                                alert('注册成功')
+                            }else{
+                                alert('注册失败')
+                            }
+                        },
+                        error: function () {
+                            alert('通信错误');
+                        }
+                    })
+                }else{
+                    return
+                }
+            });
+        </script>
 </body>
 
 </html>

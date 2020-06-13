@@ -113,7 +113,38 @@ app.get('/news*', async function (req, res) {
     }
 });
 
-
+app.post('/login',async function(req, res){
+    username = req.body.username
+    password = req.body.password
+    //判断
+    if(username != '' && password != ''){
+        var select_Sql = "select passwd from Account where username =" + username + ";";
+        let value = await mysql.promise_query(select_Sql, function () {});
+        if(value[0].passwd === password){
+            res.send('200')
+        }else{
+            res.send('500')
+        }
+    }else{
+        rets.send('500')
+    }
+});
+app.post('/register',async function(req, res){
+    username = req.body.username
+    password = req.body.password
+    var select_Sql = "select passwd from Account where username =" + username + ";";
+    var num = 0
+    for (var i in value) {
+        num += 1;
+    }
+    if(num == 0){
+        var select_Sql = "insert into Account(username,passwd) values("+username+","+"password"+")";
+        let value = await mysql.promise_query(select_Sql, function () {});
+        res.send('200')
+    }else{
+        res.send('500')
+    }    
+})
 
 
 ////////////////////////////////////error//////////////////////////////////

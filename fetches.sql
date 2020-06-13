@@ -14,3 +14,11 @@ CREATE TABLE `fetches` (
   UNIQUE KEY `id_fetches_UNIQUE` (`id_fetches`),
   UNIQUE KEY `url_UNIQUE` (`url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE Logger(
+		id int unsigned auto_increment,
+		account_id VARCHAR(255) UNIQUE NOT NULL comment '用户表ID',
+		operation VARCHAR(255) NOT NULL comment '操作',
+		
+		PRIMARY KEY (id)
+)comment='操作列表';
