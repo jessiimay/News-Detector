@@ -114,8 +114,8 @@ Home Slider
 
                         <div class="bg-img bg-img-1"></div>
 
-                        <div class="slide-caption" color="white">
-                            <div class="nav-logger">
+                        <div class="slide-caption" position="absolute" color="white" margin="auto" >
+                            <div class="nav-logger" z-index="3">
                                 <span style="float:right;margin-right:50px;margin-top:10px;" onclick="login()">登录</span>
 
                                 <div class="zhezhao" id='login'>
@@ -154,9 +154,9 @@ Home Slider
                                 </div>
                             </div>
 
-                            <div class="caption-content" color="white">
+                            <div class="caption-content" color="white" position="absolute" z-index="2">
 
-                                <span color="white" class="animated fadeInDown" font-style="oblique">throughout
+                                <span color="white" class="animated fadeInDown" >throughout
                                     Sina,
                                     163
                                     and
@@ -370,9 +370,10 @@ End Home SliderEnd
             });
 
             $("#re").click(function () {
+                print("Step into register!")
                 un = document.getElementsByName('username')[1].value
                 pw = document.getElementsByName('password')[1].value
-                pw2 = document.getElementsByName('repassword')[0].
+                pw2 = document.getElementsByName('repassword')[0].value
                 if(pw === pw2 && un != ''){
                     $.ajax({
                         url: '/register',
