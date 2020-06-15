@@ -25,6 +25,6 @@ CREATE TABLE Logger(
 
 CREATE TABLE Account(
 		username VARCHAR(255) UNIQUE NOT NULL comment '用户名',
-		password VARCHAR(255) NOT NULL comment '密码',
+		passwd VARCHAR(255) NOT NULL comment '密码',
 		PRIMARY KEY (username)
 )comment='用户';
