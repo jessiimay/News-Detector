@@ -116,7 +116,7 @@ Home Slider
 
                         <div class="slide-caption" position="absolute" color="white" margin="auto">
                             <div class="nav-logger">
-                                <span style="float:right;margin-right:50px;margin-top:10px;" onclick="login()">登录</span>
+                                <span style="float:right;margin-right:50px;margin-top:10px;" onclick="login()" id="logined">登录</span>
 
                                 <div class="zhezhao" id='login'>
 
@@ -366,6 +366,8 @@ End Home SliderEnd
                     },
                     success: function (str) {
                         if (str === '200') {
+                            document.getElementById('logined').innerHTML = "欢迎您"+un
+                            hiddeLogin()
                             alert('登录成功')
                         } else {
                             alert('密码有误')
@@ -394,6 +396,7 @@ End Home SliderEnd
                         success: function (str) {
                             if (str === '200') {
                                 alert('注册成功')
+                                hidderegister()
                             } else {
                                 alert('注册失败')
                             }

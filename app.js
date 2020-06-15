@@ -75,6 +75,7 @@ app.get("/news*", async function (req, res) {
   console.log(Request.title);
   console.log(Request.kw);
   console.log(Request.content);
+  console.log("session"+req.session.username)
   // res.send(news);
   // res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
   try {
@@ -177,12 +178,13 @@ app.post('/login',async function(req, res){
     password = req.body.password
     //判断
     if(username != '' && password != ''){
-        var select_Sql = "select password from Account where username = \'" + username + "\';";
+        var select_Sql = "select passwd from Account where username = \'" + username + "\';";
         let value = await mysql.promise_query(select_Sql, function () {});
         if(value[0].passwd === password){
             //日志信息
             var insert_sql = "insert into Logger(account_id,operation) values("+username+","+"'login')"
             let value = await mysql.promise_query(insert_sql, function () {});
+            req.session.username = username
             res.send('200')
         }else{
             res.send('500')
