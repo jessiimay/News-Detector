@@ -43,6 +43,8 @@
     <!-- Modernizer Script for old Browsers -->
     <script src="/js/modernizr-2.6.2.min.js"></script>
     <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
 
 </head>
 
@@ -168,14 +170,14 @@ Home Slider
                                     <lable for="content">content</lable>
                                     <br> -->
                                     <input type="text" placeholder="Title" name="title" font-color="black">
-                                    <select type="text" name="AO1">
-                                    <option value="AND">AND</option>
-                                    <option value="AND">OR</option>
+                                    <select id="AO1" name="opr1" placeholder="opr1">
+                                        <option value="AND">AND</option>
+                                        <option value="OR">OR</option>
                                     </select>
                                     <input type="text" placeholder="Keywords" name="kw">
-                                    <select  name="AO2">
-                                    <option value="AND">AND</option>
-                                    <option value="AND">OR</option>
+                                    <select  id="AO2" name="opr2" placeholder="opr2">
+                                        <option value="AND">AND</option>
+                                        <option value="OR">OR</option>
                                     </select>
                                     <input type="text" placeholder="Content" name="content">
                                     <br>
@@ -334,6 +336,9 @@ End Home SliderEnd
         <!-- Custom Functions -->
         <script src="/js/main.js"></script>
         <script type="text/javascript">
+            var AO1 = $("#AO1 option:selected").text();
+            var AO2 = $("#AO2 option:selected").text();
+            
             document.getElementById('login').style.display = "none";
             document.getElementById('register').style.display = "none";
             function login() {

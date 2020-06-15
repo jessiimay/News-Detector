@@ -30,12 +30,17 @@ app.use(bodyParser.urlencoded());
 var Request = {
     title: '',
     kw: '',
-    content: ''
+    content: '',
+    opr1: '',
+    opr2: ''
 }
 
 //////////////////////////////////////rout///////////////////////////////////
 //服务器主页输出
 app.get('/', function (req, res) {
+    console.log(req.query);
+    Request.opr1 = req.query.opr1;
+    Request.opr2 = req.query.opr2;
     Request.title = req.query.title;
     Request.kw = req.query.kw;
     Request.content = req.query.content;
@@ -47,7 +52,7 @@ app.get('/', function (req, res) {
     } else if (Request.title == undefined) {
         res.render('home');
     } else {
-        res.redirect('/news?title=' + Request.title + '&kw=' + Request.kw + '&content=' + Request.content);
+        res.redirect('/news?title=' + Request.title + Request.opr1 + '&kw=' + Request.kw + Request.op2 + '&content=' + Request.content);
     }
     // res.render('home');
     // res.redirect('/news');
@@ -58,7 +63,9 @@ app.get('/', function (req, res) {
 app.get('/news*', async function (req, res) {
     // res.render('news', news);
     console.log(Request.title);
+    console.log(Request.opr1);
     console.log(Request.kw);
+    console.log(Request.opr2);
     console.log(Request.content);
     // res.send(news);
     // res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
@@ -68,18 +75,33 @@ app.get('/news*', async function (req, res) {
             console.log("!!!!fail value=");
         }
         else {
-            var select_Sql = "select title,author,publish_date,source_name,content from fetches where (title like '%" +
-                Request.title + "%' or keywords like '%" + Request.kw + "%') and content like '%" + Request.content + "%'";
-            if (Request.kw == undefined && Request.content == undefined)
-                var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
-                    Request.title + "%'";
-            else if (Request.kw == undefined)
-                var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
-                    Request.title + "%' and content like '%" + Request.content + "%'";
-            else if (Request.content == undefined)
-                var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
-                    Request.title + "%' and keywords like '%" + Request.kw + "%'";
-
+            if(Request.kw == undefined) Request.kw="*";
+            if(Request.content == undefined) Request.content="*";
+            // if(Request.opr1 == "OR") 
+            //     select_Sql += "(title like '%" + Request.title + "%' "+ Request.opr1 + "kw like '%"+ Request.kw+" content like '%" + Request.content + "%'";
+            // if (Request.kw == undefined && Request.content == undefined)
+            //     var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
+            //         Request.title + "%'";
+            // else if (Request.kw == undefined)
+            //     var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
+            //         Request.title + "%' " +Request.+ " content like '%" + Request.content + "%'";
+            // else if (Request.content == undefined)
+            //     var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%" +
+            //         Request.title + "%' and keywords like '%" + Request.kw + "%'";
+            // else{
+            if(Request.opr1 == 'OR' && Request.opr2=='AND')
+                var select_Sql = "select title,author,publish_date,source_name,content from fetches where (title like '%"
+                + Request.title + "%' "+ Request.opr1 + " keywords like '%"+ Request.kw+"%') " + Request.opr2 +" content like '%"
+                    + Request.content + "%';";
+            else if(Request.opr1 == 'AND' && Request.opr2=='OR')
+                var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%"
+                + Request.title + "%' "+ Request.opr1 + " (keywords like '%"+ Request.kw+"%' " + Request.opr2 +" content like '%"
+                + Request.content + "%');";
+            else
+                var select_Sql = "select title,author,publish_date,source_name,content from fetches where title like '%"
+                + Request.title + "%' "+ Request.opr1 + " keywords like '%"+ Request.kw+"%' " + Request.opr2 +" content like '%"
+                + Request.content + "%';";
+            // }
 
             let value = await mysql.promise_query(select_Sql, function (qerr, vals, fields) {
                 console.log("Input: " + JSON.stringify(req.body));
@@ -105,8 +127,10 @@ app.get('/news*', async function (req, res) {
                    + "<p style=\"white-space:pre-wrap\"> " + value[j].content + "</p></div><br><br>";
             }
             //日志信息
-            var insert_sql = "insert into Logger(account_id,operation) values("+username+","+"'search')"
-            let logger = await mysql.promise_query(insert_sql, function () {})
+            console.log(req,session);
+            // var username = req.session.username;
+            // var insert_sql = "insert into Logger(account_id,operation) values(\'"+username+"\',"+"'search')"
+            // let logger = await mysql.promise_query(insert_sql, function () {})
             
 
             res.render('news', { body: news, F: (Freshness*100).toFixed(1)+"%", P: (Popularity*100).toFixed(1)+"%" });
@@ -122,11 +146,11 @@ app.post('/login',async function(req, res){
     password = req.body.password
     //判断
     if(username != '' && password != ''){
-        var select_Sql = "select password from Account where username = \'" + username + "\';";
+        var select_Sql = "select passwd from Account where username = \'" + username + "\';";
         let value = await mysql.promise_query(select_Sql, function () {});
         if(value[0].passwd === password){
             //日志信息
-            var insert_sql = "insert into Logger(account_id,operation) values("+username+","+"'login')"
+            var insert_sql = "insert into Logger(account_id,operation) values(\'"+username+"\',"+"'login')"
             let value = await mysql.promise_query(insert_sql, function () {});
             res.send('200')
         }else{

@@ -33,6 +33,7 @@ var promise_query = function (sqlparam, callback) {
                 // conn.query(sql, sqlparam, function (qerr, vals, fields) {
                 //     conn.release(); //释放连接 
                 //     callback(qerr, vals, fields); //事件驱动回调 
+                console.log("step into query");
                 conn.query(sqlparam, (err, rows, fields) => {
                     console.log(sqlparam);
                     if (err) {
