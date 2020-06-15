@@ -188,7 +188,6 @@ app.post('/login',async function(req, res){
     }else{
         rets.send('500')
     }
-
 });
 app.post("/register", async function (req, res) {
   username = req.body.username;
