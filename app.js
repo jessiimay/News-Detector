@@ -180,7 +180,7 @@ app.get('/news*', async function (req, res) {
         }else{
             res.send("<script>alert('未登录')</script>");
         };
-    }catch (err) { console.log(err); };
+    }catch (err) { console.log(err); }
 });
 
 app.post('/login', async function (req, res) {
