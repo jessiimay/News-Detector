@@ -17,7 +17,7 @@ CREATE TABLE `fetches` (
 
 CREATE TABLE Logger(
 		id int unsigned auto_increment,
-		account_id VARCHAR(255) UNIQUE NOT NULL comment '用户账号',
+		account_id VARCHAR(255) NOT NULL comment '用户账号',
 		operation VARCHAR(255) NOT NULL comment '操作',
 		
 		PRIMARY KEY (id)
