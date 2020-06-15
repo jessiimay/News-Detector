@@ -43,7 +43,7 @@ function request(url, callback) {
 
 //！定时执行
 var rule = new schedule.RecurrenceRule();
-var times = [1,3,5,7,9,11,13,15,17,19,21,23]; //每天2次自动执行
+var times = [1,3,5,7,9,11,13,15,17,19,21,23]; //每2h自动执行
 var times2 = 01; //定义在第几分钟执行
 rule.hour = times;
 rule.minute = times2;

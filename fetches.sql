@@ -1,3 +1,4 @@
+use crawl;
 CREATE TABLE `fetches` (
   `id_fetches` int(11)  NOT NULL AUTO_INCREMENT,
   `url` varchar(200) DEFAULT NULL,
@@ -19,6 +20,11 @@ CREATE TABLE Logger(
 		id int unsigned auto_increment,
 		account_id VARCHAR(255) NOT NULL comment '用户账号',
 		operation VARCHAR(255) NOT NULL comment '操作',
-		
 		PRIMARY KEY (id)
 )comment='操作列表';
+
+CREATE TABLE Account(
+		username VARCHAR(255) UNIQUE NOT NULL comment '用户名',
+		passwd VARCHAR(255) NOT NULL comment '密码',
+		PRIMARY KEY (username)
+)comment='用户';

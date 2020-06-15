@@ -2,7 +2,7 @@ var mysql = require("mysql");//定义了mysql的具体信息
 var pool = mysql.createPool({
     host: '127.0.0.1',
     user: 'root',
-    password: '123456',
+    password: 'root',
     database: 'crawl'
 });
 

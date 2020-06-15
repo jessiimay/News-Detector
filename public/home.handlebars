@@ -114,7 +114,7 @@ Home Slider
 
                         <div class="bg-img bg-img-1"></div>
 
-                        <div class="slide-caption" color="white">
+                        <div class="slide-caption" position="absolute" color="white" margin="auto">
                             <div class="nav-logger">
                                 <span style="float:right;margin-right:50px;margin-top:10px;" onclick="login()">登录</span>
 
@@ -156,7 +156,7 @@ Home Slider
 
                             <div class="caption-content" color="white">
 
-                                <span color="white" class="animated fadeInDown" font-style="oblique">throughout
+                                <span color="white" class="animated fadeInDown">throughout
                                     Sina,
                                     163
                                     and
@@ -168,7 +168,15 @@ Home Slider
                                     <lable for="content">content</lable>
                                     <br> -->
                                     <input type="text" placeholder="Title" name="title" font-color="black">
+                                    <select type="text" name="AO1">
+                                    <option value="AND">AND</option>
+                                    <option value="AND">OR</option>
+                                    </select>
                                     <input type="text" placeholder="Keywords" name="kw">
+                                    <select  name="AO2">
+                                    <option value="AND">AND</option>
+                                    <option value="AND">OR</option>
+                                    </select>
                                     <input type="text" placeholder="Content" name="content">
                                     <br>
                                     <br>
@@ -370,22 +378,23 @@ End Home SliderEnd
             });
 
             $("#re").click(function () {
+                print("Step into register!")
                 un = document.getElementsByName('username')[1].value
                 pw = document.getElementsByName('password')[1].value
                 pw2 = document.getElementsByName('repassword')[0].value
-                if(pw === pw2 && un != ''){
+                if (pw === pw2 && un != '') {
                     $.ajax({
                         url: '/register',
                         type: 'post',
-                        data:{
-                            username:un,
-                            password:pw,
-                            repassword:pw2
+                        data: {
+                            username: un,
+                            password: pw,
+                            repassword: pw2
                         },
                         success: function (str) {
-                            if(str === '200'){
+                            if (str === '200') {
                                 alert('注册成功')
-                            }else{
+                            } else {
                                 alert('注册失败')
                             }
                         },
@@ -393,7 +402,7 @@ End Home SliderEnd
                             alert('通信错误');
                         }
                     })
-                }else{
+                } else {
                     return
                 }
             });
