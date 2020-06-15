@@ -139,18 +139,18 @@ app.post('/login',async function(req, res){
 app.post('/register',async function(req, res){
     username = req.body.username
     password = req.body.password
-    var select_Sql = "select passwd from Account where username =" + username + ";"
+    var select_Sql = "select passwd from Account where username ='" + username + "';"
     var num = 0
     let value = await mysql.promise_query(select_Sql, function () {})
     for (var i in value) {
         num += 1;
     }
     if(num == 0){
-        var select_Sql = "insert into Account(username,passwd) values("+username+","+password+")"
+        var select_Sql = "insert into Account(username,passwd) values('"+username+"','"+password+"')"
         let value = await mysql.promise_query(select_Sql, function () {})
 
         //日志信息
-        var insert_sql = "insert into Logger(account_id,operation) values("+username+","+"'register')"
+        var insert_sql = "insert into Logger(account_id,operation) values('"+username+"',"+"'register')"
         let logger = await mysql.promise_query(insert_sql, function () {})
         res.send('200')
     }else{
