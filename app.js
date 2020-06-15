@@ -104,6 +104,10 @@ app.get('/news*', async function (req, res) {
                     + "<div  text-align=\"center\" line-height=\"100px\" font-size=\"20px\">" + value[j].author + "&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" + publish_date + "&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;" + value[j].source_name + "<br>"
                    + "<p style=\"white-space:pre-wrap\"> " + value[j].content + "</p></div><br><br>";
             }
+            //日志信息
+            var insert_sql = "insert into Logger(account_id,operation) values("+username+","+"'search')"
+            let logger = await mysql.promise_query(insert_sql, function () {})
+            
 
             res.render('news', { body: news, F: (Freshness*100).toFixed(1)+"%", P: (Popularity*100).toFixed(1)+"%" });
 
@@ -121,6 +125,9 @@ app.post('/login',async function(req, res){
         var select_Sql = "select passwd from Account where username =" + username + ";";
         let value = await mysql.promise_query(select_Sql, function () {});
         if(value[0].passwd === password){
+            //日志信息
+            var insert_sql = "insert into Logger(account_id,operation) values("+username+","+"'login')"
+            let value = await mysql.promise_query(insert_sql, function () {});
             res.send('200')
         }else{
             res.send('500')
@@ -141,6 +148,10 @@ app.post('/register',async function(req, res){
     if(num == 0){
         var select_Sql = "insert into Account(username,passwd) values("+username+","+password+")"
         let value = await mysql.promise_query(select_Sql, function () {})
+
+        //日志信息
+        var insert_sql = "insert into Logger(account_id,operation) values("+username+","+"'register')"
+        let logger = await mysql.promise_query(insert_sql, function () {})
         res.send('200')
     }else{
         res.send('500')
