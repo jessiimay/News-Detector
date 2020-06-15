@@ -164,6 +164,8 @@ app.get("/news*", async function (req, res) {
             P: (Popularity * 100).toFixed(1) + "%",
         });
         }
+    }else{
+      res.send("<script>alert('未登录')</script>")
     }
   } catch (err) {
     console.log(err);
